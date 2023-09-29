@@ -10,20 +10,16 @@
           :code $ quote
             defn comp-container (props a2)
               <> SafeAreaView
-                js{} $ :style
-                  js{} $ :height "\"100%"
-                <><>
-                  <> Text
-                    js{} $ :style
-                      js{} (:color "\"red") (:fontWeight "\"bold") (:fontSize 40)
-                    , "\"Calcit DEMO"
-                  <> comp-page $ js{}
+                js{} $ :style (js{})
+                <> comp-page $ js{}
+                  :style $ js{}
         |comp-page $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn comp-page (props e)
               let
                   *permission $ use-atom false
-                  *scan $ use-atom false
+                  *show-scan $ use-atom true
+                  *result $ use-atom nil
                 React/useEffect
                   fn () $ let
                       get-permissions $ fn () (hint-fn async)
@@ -33,19 +29,37 @@
                     get-permissions
                     , js/undefined
                   js[]
-                if (.deref *permission)
-                  <><>
-                    <> BarCodeScanner $ js{}
-                      :onBarCodeScanned $ if (.deref *scan) nil
-                        fn (info) (.set! *scan true) (js/console.log "\"Scaned" info)
-                      :style $ .-absoluteFillObject StyleSheet
-                    <> Text (js{}) (str "\"....")
-                  <> Text (js{})
-                    str-spaced "\"Failed" $ .deref *permission
+                <> View
+                  js{} $ :style
+                    js{} (:paddingTop 40) (:paddingLeft 20)
+                  <> Text
+                    js{} $ :style
+                      js{} $ :fontFamily "\"monospace"
+                    str (.deref *show-scan) "\" " $ js/JSON.stringify (.deref *result)
+                  if (.deref *permission)
+                    <><>
+                      <> Text (js{}) "\"AA"
+                      <> Pressable
+                        js{}
+                          :style $ js{} (:backgroundColor "\"#000") (:color "\"#fff") (:justifyContent "\"center") (:alignItems "\"center") (:width 80) (:height 40)
+                          :onPress $ fn (e) (.swap! *show-scan not)
+                        <> Text
+                          js{} $ :style
+                            js{} $ :color "\"#fff"
+                          , "\"Toggle"
+                      if (.deref *show-scan)
+                        <> BarCodeScanner $ js{}
+                          :onBarCodeScanned $ fn (info) (js/console.log "\"Scaned" info) (.set! *show-scan false)
+                            .set! *result $ .-data info
+                          :style $ js{} (:width 360) (:height 480) (:backgroundColor "\"#a3f")
+                        <> Text (js{}) "\"hidden"
+                      <> Text (js{}) (str "\"....")
+                    <> Text (js{})
+                      str-spaced "\"Failed" $ .deref *permission
       :ns $ %{} :CodeEntry (:doc |)
         :code $ quote
           ns app.comp.container $ :require ("\"react" :as React)
-            "\"react-native" :refer $ View Text StyleSheet ScrollView SafeAreaView
+            "\"react-native" :refer $ View Text StyleSheet ScrollView SafeAreaView Pressable
             "\"expo-barcode-scanner" :refer $ BarCodeScanner
             app.core :refer $ <> <><> use-atom js{} js[]
     |app.core $ %{} :FileEntry
