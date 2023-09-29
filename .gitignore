@@ -33,3 +33,8 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+js-out
+
+.compact-inc.cirru
+.calcit-error.cirru
