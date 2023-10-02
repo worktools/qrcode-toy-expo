@@ -1,7 +1,7 @@
 {
-  "name": "qrcode-toy-rn",
+  "name": "qrcode-toy-expo",
   "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "./main.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -17,9 +17,6 @@
     "react-native": "0.72.5",
     "react-native-qrcode-svg": "^6.2.0",
     "react-native-svg": "^13.14.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.20.0"
   },
   "private": true
 }

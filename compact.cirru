@@ -44,6 +44,7 @@
                     , js/undefined
                   js[]
                 <><>
+                  <> StatusBar $ js{} (:style "\"light")
                   comp-scan *show-scan $ fn (content)
                     let
                         c $ .trim content
@@ -144,6 +145,7 @@
             "\"expo-barcode-scanner" :refer $ BarCodeScanner
             app.core :refer $ <> <><> use-atom js{} js[]
             "\"react-native-qrcode-svg" :default QRCode
+            "\"expo-status-bar" :refer $ StatusBar
     |app.core $ %{} :FileEntry
       :defs $ {}
         |%Atom $ %{} :CodeEntry (:doc |)
@@ -193,11 +195,11 @@
       :defs $ {}
         |main! $ %{} :CodeEntry (:doc |)
           :code $ quote
-            defn main! () $ do comp-container
+            defn main! () $ registerRootComponent comp-container
         |reload! $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn reload! $
       :ns $ %{} :CodeEntry (:doc |)
         :code $ quote
-          ns app.main $ :require
+          ns app.main $ :require ("\"expo/build/launch/registerRootComponent" :default registerRootComponent)
             app.comp.container :refer $ comp-container

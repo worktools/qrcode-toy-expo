@@ -224,6 +224,17 @@
                   |j $ %{} :Expr (:at 1696240635722) (:by |u0)
                     :data $ {}
                       |D $ %{} :Leaf (:at 1696240636525) (:by |u0) (:text |<><>)
+                      |L $ %{} :Expr (:at 1696260250922) (:by |u0)
+                        :data $ {}
+                          |T $ %{} :Leaf (:at 1696260251410) (:by |u0) (:text |<>)
+                          |b $ %{} :Leaf (:at 1696260254708) (:by |u0) (:text |StatusBar)
+                          |h $ %{} :Expr (:at 1696260289846) (:by |u0)
+                            :data $ {}
+                              |T $ %{} :Leaf (:at 1696260292437) (:by |u0) (:text |js{})
+                              |b $ %{} :Expr (:at 1696260292809) (:by |u0)
+                                :data $ {}
+                                  |T $ %{} :Leaf (:at 1696260293580) (:by |u0) (:text |:style)
+                                  |b $ %{} :Leaf (:at 1696260295469) (:by |u0) (:text "|\"light")
                       |T $ %{} :Expr (:at 1696240594847) (:by |u0)
                         :data $ {}
                           |T $ %{} :Leaf (:at 1696240594847) (:by |u0) (:text |comp-scan)
@@ -1003,6 +1014,13 @@
                     |T $ %{} :Leaf (:at 1696072085768) (:by |u0) (:text "|\"react-native-qrcode-svg")
                     |b $ %{} :Leaf (:at 1696072088105) (:by |u0) (:text |:default)
                     |h $ %{} :Leaf (:at 1696072090207) (:by |u0) (:text |QRCode)
+                |s $ %{} :Expr (:at 1696260271856) (:by |u0)
+                  :data $ {}
+                    |T $ %{} :Leaf (:at 1696260281018) (:by |u0) (:text "|\"expo-status-bar")
+                    |b $ %{} :Leaf (:at 1696260282713) (:by |u0) (:text |:refer)
+                    |h $ %{} :Expr (:at 1696260279385) (:by |u0)
+                      :data $ {}
+                        |T $ %{} :Leaf (:at 1696260274832) (:by |u0) (:text |StatusBar)
     |app.core $ %{} :FileEntry
       :defs $ {}
         |%Atom $ %{} :CodeEntry (:doc |)
@@ -1244,8 +1262,8 @@
                 :data $ {}
               |l $ %{} :Expr (:at 1695576399629) (:by |u0)
                 :data $ {}
-                  |T $ %{} :Leaf (:at 1695576400002) (:by |u0) (:text |do)
-                  |b $ %{} :Leaf (:at 1695576400371) (:by |u0) (:text |comp-container)
+                  |T $ %{} :Leaf (:at 1696258470899) (:by |u0) (:text |registerRootComponent)
+                  |b $ %{} :Leaf (:at 1696258477384) (:by |u0) (:text |comp-container)
         |reload! $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1695576377243) (:by |u0)
             :data $ {}
@@ -1261,6 +1279,11 @@
             |h $ %{} :Expr (:at 1695576384930) (:by |u0)
               :data $ {}
                 |T $ %{} :Leaf (:at 1695576388211) (:by |u0) (:text |:require)
+                |X $ %{} :Expr (:at 1696258451985) (:by |u0)
+                  :data $ {}
+                    |T $ %{} :Leaf (:at 1696258518335) (:by |u0) (:text "|\"expo/build/launch/registerRootComponent")
+                    |b $ %{} :Leaf (:at 1696258455849) (:by |u0) (:text |:default)
+                    |h $ %{} :Leaf (:at 1696258467012) (:by |u0) (:text |registerRootComponent)
                 |b $ %{} :Expr (:at 1695576388543) (:by |u0)
                   :data $ {}
                     |T $ %{} :Leaf (:at 1695576393262) (:by |u0) (:text |app.comp.container)
