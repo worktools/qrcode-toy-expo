@@ -224,10 +224,7 @@
                   |l $ %{} :Expr (:at 1696065141367) (:by |u0)
                     :data $ {}
                       |D $ %{} :Leaf (:at 1696065142498) (:by |u0) (:text |if)
-                      |L $ %{} :Expr (:at 1696065142498) (:by |u0)
-                        :data $ {}
-                          |T $ %{} :Leaf (:at 1696065142498) (:by |u0) (:text |.deref)
-                          |b $ %{} :Leaf (:at 1696065142498) (:by |u0) (:text |*show-scan)
+                      |L $ %{} :Leaf (:at 1696239956543) (:by |u0) (:text |@*show-scan)
                       |P $ %{} :Expr (:at 1696095625023) (:by |u0)
                         :data $ {}
                           |T $ %{} :Leaf (:at 1696095627622) (:by |u0) (:text |comp-scan)
@@ -319,10 +316,7 @@
                                       |l $ %{} :Expr (:at 1696007961502) (:by |u0)
                                         :data $ {}
                                           |D $ %{} :Leaf (:at 1696007964630) (:by |u0) (:text |js/JSON.stringify)
-                                          |T $ %{} :Expr (:at 1696007931536) (:by |u0)
-                                            :data $ {}
-                                              |D $ %{} :Leaf (:at 1696007934138) (:by |u0) (:text |.deref)
-                                              |T $ %{} :Leaf (:at 1696007931258) (:by |u0) (:text |*result)
+                                          |T $ %{} :Leaf (:at 1696239966615) (:by |u0) (:text |@*result)
                           |T $ %{} :Expr (:at 1696071811415) (:by |u0)
                             :data $ {}
                               |D $ %{} :Leaf (:at 1696071813204) (:by |u0) (:text |<>)
@@ -347,10 +341,7 @@
                               |T $ %{} :Expr (:at 1695981908927) (:by |u0)
                                 :data $ {}
                                   |T $ %{} :Leaf (:at 1695981918939) (:by |u0) (:text |if)
-                                  |a $ %{} :Expr (:at 1695998915964) (:by |u0)
-                                    :data $ {}
-                                      |T $ %{} :Leaf (:at 1696004681569) (:by |u0) (:text |.deref)
-                                      |b $ %{} :Leaf (:at 1695998918978) (:by |u0) (:text |*permission)
+                                  |a $ %{} :Leaf (:at 1696239971102) (:by |u0) (:text |@*permission)
                                   |h $ %{} :Expr (:at 1696007461322) (:by |u0)
                                     :data $ {}
                                       |T $ %{} :Leaf (:at 1696007461711) (:by |u0) (:text |<>)
@@ -387,10 +378,7 @@
                                         :data $ {}
                                           |D $ %{} :Leaf (:at 1695984047464) (:by |u0) (:text |str-spaced)
                                           |T $ %{} :Leaf (:at 1696065562207) (:by |u0) (:text "|\"No permission")
-                                          |l $ %{} :Expr (:at 1695984433139) (:by |u0)
-                                            :data $ {}
-                                              |T $ %{} :Leaf (:at 1696004684245) (:by |u0) (:text |.deref)
-                                              |b $ %{} :Leaf (:at 1695984433139) (:by |u0) (:text |*permission)
+                                          |l $ %{} :Leaf (:at 1696239975739) (:by |u0) (:text |@*permission)
                               |b $ %{} :Expr (:at 1696095033553) (:by |u0)
                                 :data $ {}
                                   |T $ %{} :Leaf (:at 1696095033553) (:by |u0) (:text |<>)
@@ -421,10 +409,7 @@
                               |L $ %{} :Expr (:at 1696072150185) (:by |u0)
                                 :data $ {}
                                   |D $ %{} :Leaf (:at 1696072154272) (:by |u0) (:text |content)
-                                  |T $ %{} :Expr (:at 1696072127524) (:by |u0)
-                                    :data $ {}
-                                      |T $ %{} :Leaf (:at 1696072135925) (:by |u0) (:text |.deref)
-                                      |b $ %{} :Leaf (:at 1696072133062) (:by |u0) (:text |*result)
+                                  |T $ %{} :Leaf (:at 1696239980272) (:by |u0) (:text |@*result)
                               |T $ %{} :Expr (:at 1696096274484) (:by |u0)
                                 :data $ {}
                                   |D $ %{} :Leaf (:at 1696096275167) (:by |u0) (:text |if)

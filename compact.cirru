@@ -43,7 +43,7 @@
                     get-permissions
                     , js/undefined
                   js[]
-                if (.deref *show-scan)
+                if @*show-scan
                   comp-scan *show-scan $ fn (content)
                     let
                         c $ .trim content
@@ -55,19 +55,17 @@
                       <> Text
                         js{} $ :style
                           js{} (:fontFamily "\"monospace") (:marginBottom 12)
-                        str "\"Scan result: " $ js/JSON.stringify (.deref *result)
+                        str "\"Scan result: " $ js/JSON.stringify @*result
                     <> View
                       js{} $ :style
                         js{} (:flexDirection "\"row") (:gap 8)
-                      if (.deref *permission)
+                      if @*permission
                         <> Button $ js{} (:title "\"Scan")
                           :onPress $ fn (e) (.swap! *show-scan not)
-                        <> Text (js{})
-                          str-spaced "\"No permission" $ .deref *permission
+                        <> Text (js{}) (str-spaced "\"No permission" @*permission)
                       <> Button $ js{} (:title "\"Draft")
                         :onPress $ fn (e) (.show draft-plugin)
-                    if-let
-                      content $ .deref *result
+                    if-let (content @*result)
                       if
                         not $ blank? content
                         <> View
