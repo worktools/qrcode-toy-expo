@@ -43,45 +43,47 @@
                     get-permissions
                     , js/undefined
                   js[]
-                if @*show-scan
+                <><>
                   comp-scan *show-scan $ fn (content)
                     let
                         c $ .trim content
                       .set! *result c
-                  <> View
-                    js{} $ :style
-                      js{} (:paddingTop 40) (:paddingLeft 20) (:backgroundColor "\"#eee") (:height "\"100%")
-                    <> View (js{})
-                      <> Text
-                        js{} $ :style
-                          js{} (:fontFamily "\"monospace") (:marginBottom 12)
-                        str "\"Scan result: " $ js/JSON.stringify @*result
+                  if (not @*show-scan)
                     <> View
                       js{} $ :style
-                        js{} (:flexDirection "\"row") (:gap 8)
-                      if @*permission
-                        <> Button $ js{} (:title "\"Scan")
-                          :onPress $ fn (e) (.swap! *show-scan not)
-                        <> Text (js{}) (str-spaced "\"No permission" @*permission)
-                      <> Button $ js{} (:title "\"Draft")
-                        :onPress $ fn (e) (.show draft-plugin)
-                    if-let (content @*result)
-                      if
-                        not $ blank? content
-                        <> View
+                        js{} (:paddingTop 40) (:paddingLeft 20) (:backgroundColor "\"#eee") (:height "\"100%")
+                      <> View (js{})
+                        <> Text
                           js{} $ :style
-                            js{} $ :marginTop 16
-                          <> QRCode $ js{} (:value content) (:size 320)
-                    .render draft-plugin
+                            js{} (:fontFamily "\"monospace") (:marginBottom 12)
+                          str "\"Scan result: " $ js/JSON.stringify @*result
+                      <> View
+                        js{} $ :style
+                          js{} (:flexDirection "\"row") (:gap 8)
+                        if @*permission
+                          <> Button $ js{} (:title "\"Scan")
+                            :onPress $ fn (e) (.swap! *show-scan not)
+                          <> Text (js{}) (str-spaced "\"No permission" @*permission)
+                        <> Button $ js{} (:title "\"Draft")
+                          :onPress $ fn (e) (.show draft-plugin)
+                      if-let (content @*result)
+                        if
+                          not $ blank? content
+                          <> View
+                            js{} $ :style
+                              js{} $ :marginTop 16
+                            <> QRCode $ js{} (:value content) (:size 320)
+                      .render draft-plugin
         |comp-scan $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn comp-scan (*show-scan on-scan)
               <> Modal
-                js{} $ :style (js{})
+                js{} (:animationType "\"fade") (:transparent true) (:visible @*show-scan)
+                  :onRequestClose $ fn () (.set! *show-scan false)
                 <> BarCodeScanner $ js{}
                   :onBarCodeScanned $ fn (info) (js/console.log "\"Scaned" info) (.set! *show-scan false)
                     on-scan $ .-data info
-                  :style $ js{} (; :width 360) (:width "\"100%") (:height "\"100%") (; :height 480) (:backgroundColor "\"#000")
+                  :style $ js{} (:width "\"100%") (:height "\"100%") (:backgroundColor "\"hsla(0,0%,0%,0.7)")
                 <> Pressable
                   js{}
                     :style $ style-merge style-press-button style-close-position
@@ -110,11 +112,11 @@
                     js{}
                       :visible $ .deref *show?
                       :onRequestClose $ fn () (.set! *show? false)
-                      :animationType "\"slide"
+                      :animationType "\"fade"
                       :transparent true
                     <> View
                       js{} $ :style
-                        js{} (:justifyContent "\"center") (:alignItems "\"center") (:flex 1) (:backgroundColor "\"#000")
+                        js{} (:justifyContent "\"center") (:alignItems "\"center") (:flex 1) (:backgroundColor "\"hsla(0,0%,0%,0.6)")
                       <> View
                         js{} $ :style
                           js{} (:marginTop 8) (:flexDirection "\"column") (:gap 8) (:backgroundColor "\"#fff") (:borderWidth 1) (:padding 8) (:borderRadius 8)
