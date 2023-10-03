@@ -65,7 +65,21 @@
                           <> Button $ js{} (:title "\"Scan")
                             :onPress $ fn (e) (.swap! *show-scan not)
                           <> Text (js{}) (str-spaced "\"No permission" @*permission)
-                        <> Button $ js{} (:title "\"Draft")
+                        <> Button $ js{} (:title "\"File")
+                          :onPress $ fn (e) (hint-fn async)
+                            let
+                                result $ js-await
+                                  launchImageLibraryAsync $ js{} (:allowEditing true) (:quality 1)
+                              if (.-canceled result)
+                                .!show ToastAndroid "\"cancelled by user" $ .-SHORT ToastAndroid
+                                let
+                                    results $ js-await
+                                      .!scanFromURLAsync BarCodeScanner $ .-uri
+                                        .-0 $ .-assets result
+                                  if
+                                    > (.-length results) 0
+                                    .set! *result $ -> results .-0 .-data
+                        <> Button $ js{} (:title "\"Text")
                           :onPress $ fn (e) (.show draft-plugin)
                       if-let (content @*result)
                         if
@@ -141,11 +155,12 @@
       :ns $ %{} :CodeEntry (:doc |)
         :code $ quote
           ns app.comp.container $ :require ("\"react" :as React)
-            "\"react-native" :refer $ View Modal Button Text StyleSheet ScrollView SafeAreaView Pressable TextInput
+            "\"react-native" :refer $ View Modal Button ToastAndroid Text StyleSheet ScrollView SafeAreaView Pressable TextInput
             "\"expo-barcode-scanner" :refer $ BarCodeScanner
             app.core :refer $ <> <><> use-atom js{} js[]
             "\"react-native-qrcode-svg" :default QRCode
             "\"expo-status-bar" :refer $ StatusBar
+            "\"expo-image-picker" :refer $ launchImageLibraryAsync
     |app.core $ %{} :FileEntry
       :defs $ {}
         |%Atom $ %{} :CodeEntry (:doc |)

@@ -11,11 +11,13 @@ import * as $React from "react";
 import { StatusBar } from "expo-status-bar";
 import { Text } from "react-native";
 import { TextInput } from "react-native";
+import { ToastAndroid } from "react-native";
 import { View } from "react-native";
 import { js_$L_ } from "./app.core.mjs";
+import { launchImageLibraryAsync } from "expo-image-picker";
 import { use_atom } from "./app.core.mjs";
 var _tag={};
-["%draft-plugin-actions","alignItems","animationType","backgroundColor","borderRadius","borderWidth","color","draft-plugin","flex","flexDirection","fontFamily","gap","get","height","hide","justifyContent","marginBottom","marginTop","onBarCodeScanned","onChangeText","onPress","onRequestClose","padding","paddingHorizontal","paddingLeft","paddingTop","placeholder","position","render","right","row","show","size","style","title","top","transparent","value","visible","width",].forEach(x => {
+["%draft-plugin-actions","alignItems","allowEditing","animationType","backgroundColor","borderRadius","borderWidth","color","draft-plugin","flex","flexDirection","fontFamily","gap","get","height","hide","justifyContent","marginBottom","marginTop","onBarCodeScanned","onChangeText","onPress","onRequestClose","padding","paddingHorizontal","paddingLeft","paddingTop","placeholder","position","quality","render","right","row","show","size","style","title","top","transparent","value","visible","width",].forEach(x => {
   _tag[x] = $calcit.newTag(x);
 });
 
@@ -102,7 +104,17 @@ return $calcit.invoke_method("set!",_$s_result,c)
 if (arguments.length !== 1) throw _calcit_args_mismatch('f%', 1, arguments.length);
 return $calcit.invoke_method("swap!",_$s_show_scan,$calcit.not)
 }
-)) : _LT__GT_(Text, $calcit._$n_js_object(), $calcit.str_spaced("No permission", $calcit.deref(_$s_permission))) ), _LT__GT_(Button, $calcit._$n_js_object(_tag["title"], "Draft", _tag["onPress"], function f_PCT_(e) { 
+)) : _LT__GT_(Text, $calcit._$n_js_object(), $calcit.str_spaced("No permission", $calcit.deref(_$s_permission))) ), _LT__GT_(Button, $calcit._$n_js_object(_tag["title"], "File", _tag["onPress"], async function f_PCT_(e) { 
+if (arguments.length !== 1) throw _calcit_args_mismatch('f%', 1, arguments.length);
+let result = (await launchImageLibraryAsync($calcit._$n_js_object(_tag["allowEditing"], true, _tag["quality"], 1)));
+
+if (result.canceled) { return ToastAndroid.show("cancelled by user", ToastAndroid.SHORT) } else { let results = (await BarCodeScanner.scanFromURLAsync(result.assets["0"].uri));
+
+if ($calcit._GT_(results.length, 0)) { return $calcit.invoke_method("set!",_$s_result,results["0"].data) } else { return  null; }
+ }
+
+}
+)), _LT__GT_(Button, $calcit._$n_js_object(_tag["title"], "Text", _tag["onPress"], function f_PCT_(e) { 
 if (arguments.length !== 1) throw _calcit_args_mismatch('f%', 1, arguments.length);
 return $calcit.invoke_method("show",draft_plugin,)
 }

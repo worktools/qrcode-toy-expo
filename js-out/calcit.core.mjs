@@ -927,6 +927,12 @@ identity(_$n_core_map_class);
 identity(_$n_core_nil_class);
 return identity(_$n_core_fn_class)
 }
+export function _GT_(x, ...ys) { 
+if (arguments.length < 1) throw new Error('too few arguments');
+ys = arrayToList(ys);
+
+if ($calcit_procs._$n__$e_(1, $calcit_procs._$n_list_$o_count(ys))) { return $calcit_procs._$n__GT_(x, $calcit_procs._$n_list_$o_first(ys)) } else { return foldl_compare(ys, x, $calcit_procs._$n__GT_) }
+}
 
 var ref_$q_ = $calcit_procs.ref_$q_;
 export function deref(_$s_a) { 
