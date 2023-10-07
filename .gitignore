@@ -34,7 +34,10 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
-js-out
+# js-out
 
 .compact-inc.cirru
 .calcit-error.cirru
+
+*.aab
+*.apk

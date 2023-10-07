@@ -5,3 +5,5 @@ package-lock.json -diff linguist-generated
 
 android/**  -diff linguist-generated
 ios/** -diff linguist-generated
+
+js-out/** -diff linguist-generated
