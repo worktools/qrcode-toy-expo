@@ -1,4 +1,4 @@
-name: Upload
+name: Build native app
 
 on:
   push:
@@ -6,28 +6,42 @@ on:
       - main
   pull_request: {}
 
+permissions:
+  contents: read
+
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v3
-
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 20
-        cache: 'yarn'
-
-    - uses: supplypike/setup-bin@v3
-      with:
-        uri: 'https://github.com/calcit-lang/calcit/releases/download/0.8.3/cr'
-        name: 'cr'
-        version: '0.8.3'
-
-    - uses: supplypike/setup-bin@v3
-      with:
-        uri: 'https://github.com/calcit-lang/calcit/releases/download/0.8.3/caps'
-        name: 'caps'
-        version: '0.8.3'
-
-    - name: "compiles to js"
-      run: caps --ci && cr --emit-js --once
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - name: Enable Corepack
+        run: |
+          corepack enable
+          corepack prepare yarn@4.18.0 --activate
+      - uses: calcit-lang/setup-calcit@ca701be5a471759e442aa053cd100720bbe1f09f # v1.5.0
+        with:
+          tools: calcit,caps
+          caps-version: "0.1.1"
+      - name: Install dependencies
+        run: |
+          set -euo pipefail
+          caps --strict --ci
+          yarn install --immutable
+          caps verify --toolchain
+      - name: Check canonical Calcit source and types
+        run: |
+          set -euo pipefail
+          calcit edit format
+          git diff --exit-code -- calcit.cirru
+          yarn check
+      - name: Build Android and iOS JS bundles
+        env:
+          CI: "1"
+          EXPO_NO_TELEMETRY: "1"
+        run: yarn build
