@@ -2,14 +2,19 @@
   "name": "qrcode-toy-expo",
   "version": "1.0.0",
   "main": "./main.js",
+  "packageManager": "yarn@4.18.0",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
+    "compile": "calcit",
+    "watch": "calcit -w",
+    "check": "calcit --check-only && calcit analyze check-public --ns app.main --ns app.core --ns app.comp.container --summary-only",
+    "build": "yarn compile && expo export --platform android --max-workers 2 --output-dir dist/android && expo export --platform ios --max-workers 2 --output-dir dist/ios",
+    "start": "yarn compile && expo start",
+    "android": "yarn compile && expo start --android",
+    "ios": "yarn compile && expo start --ios",
+    "web": "yarn compile && expo start --web"
   },
   "dependencies": {
-    "@calcit/procs": "^0.8.4",
+    "@calcit/procs": "0.27.0",
     "expo": "~49.0.13",
     "expo-barcode-scanner": "^12.5.0",
     "expo-image-picker": "^14.5.0",
@@ -18,6 +23,11 @@
     "react-native": "0.72.5",
     "react-native-qrcode-svg": "^6.2.0",
     "react-native-svg": "^13.14.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@babel/plugin-syntax-import-attributes": "7.27.1",
+    "babel-preset-expo": "~9.5.2"
   },
   "private": true
 }
