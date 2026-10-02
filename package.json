@@ -8,10 +8,10 @@
     "watch": "calcit -w",
     "check": "calcit --check-only && calcit analyze check-public --ns app.main --ns app.core --ns app.comp.container --summary-only",
     "build": "yarn compile && expo export --platform android --max-workers 2 --output-dir dist/android && expo export --platform ios --max-workers 2 --output-dir dist/ios",
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
+    "start": "yarn compile && expo start",
+    "android": "yarn compile && expo start --android",
+    "ios": "yarn compile && expo start --ios",
+    "web": "yarn compile && expo start --web"
   },
   "dependencies": {
     "@calcit/procs": "0.27.0",

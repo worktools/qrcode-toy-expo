@@ -10,11 +10,11 @@ caps --strict --ci
 yarn install --immutable
 caps verify --toolchain
 yarn check
-yarn compile
 yarn android
 ```
 
-开发时在另一个终端执行 `yarn watch`；iOS 启动使用 `yarn ios`。
+`yarn start`、`yarn android`、`yarn ios` 和 `yarn web` 会先生成未入库的
+`js-out/`；开发时可在另一个终端执行 `yarn watch` 持续更新。
 
 `yarn build` 编译一次 Calcit，并分别导出 Android/iOS 的 Metro/Hermes 资源到
 `dist/android` 和 `dist/ios`。CI 验证类型与双平台资源构建，不打包 APK/IPA、不提交商店发布。
