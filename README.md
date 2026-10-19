@@ -30,7 +30,8 @@ yarn android
 是原 `Object.assign` 样式合并适配器，不扩散到应用状态。
 
 `yarn check` 包含全部定义、完整 strict 和三个公开命名空间检查；`yarn test`
-使用匹配 React 18.2 的 renderer，验收真实 Hook 的连续切换、Unicode 草稿及 Option 结果。
+会先编译所需的 `js-out/`，可在干净安装后独立运行，再使用匹配 React 18.2 的 renderer，
+验收真实 Hook 的连续切换、Unicode 草稿及 Option 结果。
 它不模拟相机、相册或设备权限，也不代替 Android/iOS 真机验收。
 File 选择使用 SDK49 的正确参数 `allowsEditing`（旧写法 `allowEditing` 不生效）；
 取消选择时 Android 保持 toast，iOS 不套用缺少 `SHORT` 常量的 Android 专用接口。
