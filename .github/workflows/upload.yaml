@@ -44,4 +44,7 @@ jobs:
         env:
           CI: "1"
           EXPO_NO_TELEMETRY: "1"
-        run: yarn build
+        run: |
+          set -euo pipefail
+          yarn build
+          yarn test
