@@ -46,5 +46,6 @@ jobs:
           EXPO_NO_TELEMETRY: "1"
         run: |
           set -euo pipefail
+          yarn expo install --check
           yarn build
           yarn test
