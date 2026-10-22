@@ -2,8 +2,13 @@
 
 基于 Expo SDK49 / React Native 0.72 的原生二维码工具，支持相机扫码、图片扫码与文本二维码生成。
 
-使用已完成配对发布的 Calcit / `@calcit/procs@0.30.1-alpha.5`、Node.js 24 和 Yarn 4.18.0。
-正式 0.30.1 的 CLI/npm 发布配对尚未完成，不能仅根据 release 页面替换版本。
+使用已完成配对发布的正式 Calcit / `@calcit/procs@0.30.1`、Node.js 24 和 Yarn 4.18.0。
+升级时同步安装 runtime 并重新生成 JS；不混用旧 alpha 产物。保留 Expo49 / React Native0.72，
+此次不迁移 Expo SDK、设备权限或商店发布流程；相机/相册仍需要原权限与真机验收。
+原 lock 中四个原生模块超出 SDK49 的兼容声明，现按 Expo 自带版本检查对齐：
+扫码器12.5.x、图片选择14.3.x、状态栏1.6.x、SVG13.9.0，并将 React Native 补丁升级到
+在线 SDK49 检查要求的0.72.10（仍配对 React18.2.0）；前四项是保持 SDK49 合同的兼容回退，
+不是升级到最新 Expo SDK。导出资源和 Hook 测试不等于真机扫码/图片选择已经通过。
 源码为 `calcit.cirru`，依赖声明为 `deps.cirru`；`js-out/` 是本地生成文件，不提交。
 
 ```bash
@@ -29,7 +34,7 @@ yarn android
 [calcit #2209](https://github.com/calcit-lang/calcit/issues/2209)。唯一保留的 unsafe
 是原 `Object.assign` 样式合并适配器，不扩散到应用状态。
 
-`yarn check` 包含全部定义、完整 strict 和三个公开命名空间检查；`yarn test`
+`yarn check` 包含全部定义和完整 strict；原三个命名空间均已由 all-defs 覆盖，不重复检查。`yarn test`
 会先编译所需的 `js-out/`，可在干净安装后独立运行，再使用匹配 React 18.2 的 renderer，
 验收真实 Hook 的连续切换、Unicode 草稿及 Option 结果。
 它不模拟相机、相册或设备权限，也不代替 Android/iOS 真机验收。
