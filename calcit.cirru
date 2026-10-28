@@ -13,119 +13,98 @@
         '%draft-plugin-actions $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def %draft-plugin-actions (impl-traits DraftPluginState DraftPluginImpl)
           :examples $ []
-          :schema $ :: 'EnumDef
+          :schema $ quote EnumDef
         'BarcodeEvent $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait BarcodeEvent (:data 'String)
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object)
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'BarcodeResults $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait BarcodeResults (:length 'Number) (:first 'app.comp.container/BarcodeEvent)
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object)
             :names $ {} $ :first |0
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'DraftPluginImpl $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defimpl DraftPluginImpl DraftPluginOps
             .render $ fn (self)
-              hint-fn $ {}
-                :args $ [] 'app.comp.container/DraftPluginState
-                :return 'JsObject
+              hint-fn $ Fn app.comp.container/DraftPluginState $ -> JsObject
               match self $
                 :draft-plugin node draft visibility
                 , node
             .show $ fn (self)
-              hint-fn $ {}
-                :args $ [] 'app.comp.container/DraftPluginState
-                :return 'Unit
+              hint-fn $ Fn app.comp.container/DraftPluginState $ -> Unit
               match self $
                 :draft-plugin node draft visibility
                 .set! visibility true
             .hide $ fn (self)
-              hint-fn $ {}
-                :args $ [] 'app.comp.container/DraftPluginState
-                :return 'Unit
+              hint-fn $ Fn app.comp.container/DraftPluginState $ -> Unit
               match self $
                 :draft-plugin node draft visibility
                 .set! visibility false
             .get $ fn (self)
-              hint-fn $ {}
-                :args $ [] 'app.comp.container/DraftPluginState
-                :return 'String
+              hint-fn $ Fn app.comp.container/DraftPluginState $ -> String
               match self $
                 :draft-plugin node draft visibility
                 .deref draft
           :examples $ []
-          :schema $ :: 'Impl
+          :schema $ quote Impl
         'DraftPluginOps $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait DraftPluginOps
-            .render $ :: 'Fn $ {}
-              :args $ [] 'app.comp.container/DraftPluginState
-              :return 'JsObject
-            .show $ :: 'Fn $ {}
-              :args $ [] 'app.comp.container/DraftPluginState
-              :return 'Unit
-            .hide $ :: 'Fn $ {}
-              :args $ [] 'app.comp.container/DraftPluginState
-              :return 'Unit
-            .get $ :: 'Fn $ {}
-              :args $ [] 'app.comp.container/DraftPluginState
-              :return 'String
+            .render $ quote $ Fn app.comp.container/DraftPluginState (-> JsObject)
+            .show $ quote $ Fn app.comp.container/DraftPluginState (-> Unit)
+            .hide $ quote $ Fn app.comp.container/DraftPluginState (-> Unit)
+            .get $ quote $ Fn app.comp.container/DraftPluginState (-> String)
           :examples $ []
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'DraftPluginState $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defenum DraftPluginState
-            :draft-plugin 'JsObject (:: 'app.core/%Atom 'String) (:: 'app.core/%Atom 'Bool)
+            :draft-plugin 'JsObject
+              quote $ app.core/%Atom String
+              quote $ app.core/%Atom Bool
           :examples $ []
-          :schema $ :: 'EnumDef
+          :schema $ quote EnumDef
         'ImageAsset $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait ImageAsset (:uri 'String)
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object)
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'ImagePickerResult $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait ImagePickerResult (:canceled 'Bool)
-            :assets $ :: 'JsNullish 'JsArray
+            :assets $ quote $ JsNullish JsArray
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object)
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'PermissionStatus $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait PermissionStatus (:status 'String)
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object)
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'PlatformHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait PlatformHost (:OS 'String)
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object)
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'ToastHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait ToastHost (:SHORT 'Number)
-            .show $ :: 'Fn $ {}
-              :args $ [] 'app.comp.container/ToastHost 'String 'Number
-              :return 'Unit
+            .show $ quote $ Fn app.comp.container/ToastHost String Number (-> Unit)
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object)
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'comp-container $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn comp-container (props e)
             let
                 *permission $ use-atom false
                 *show-scan $ use-atom false
-                *result $ use-atom $ assert-type (Option :none) (:: 'Option 'String)
+                *result $ use-atom $ assert-type (Option :none)
+                  quote $ Option String
                 draft-plugin $ use-draft-plugin $ fn (content)
-                  hint-fn $ {}
-                    :args $ [] 'String
-                    :return 'Unit
+                  hint-fn $ Fn String $ -> Unit
                   .set! *result $ Option :some content
               React/useEffect
                 fn () $ let
                     get-permissions $ fn ()
-                      hint-fn $ {}
-                        :args $ []
-                        :return 'Unit
-                        :async true
-                        :features $ #{} :js-ffi
+                      hint-fn $ Fn (-> Unit) (:features :js-ffi) (:async)
                       let
                           status $ js-cast
                             js-await $ .!requestPermissionsAsync BarCodeScanner
@@ -159,11 +138,7 @@
                           str-spaced "|No permission" $ .deref *permission
                       <> Button $ js{} (:title |File)
                         :onPress $ fn (e)
-                          hint-fn $ {}
-                            :args $ [] 'Dynamic
-                            :return 'Unit
-                            :async true
-                            :features $ #{} :js-ffi
+                          hint-fn $ Fn Dynamic (-> Unit) (:features :js-ffi) (:async)
                           let
                               result $ js-cast
                                 js-await $ launchImageLibraryAsync $ js{} (:allowsEditing true) (:quality 1)
@@ -200,9 +175,7 @@
                           <> QRCode $ js{} (:value content) (:size 320)
                     .render draft-plugin
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'JsObject)
-            :args $ [] 'JsObject 'Dynamic
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn JsObject Dynamic (-> JsObject) (:features :js-ffi)
         'comp-scan $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn comp-scan (*show-scan on-scan)
             <> Modal
@@ -211,10 +184,7 @@
                 :onRequestClose $ fn () $ .set! *show-scan false
               <> BarCodeScanner $ js{}
                 :onBarCodeScanned $ fn (info)
-                  hint-fn $ {}
-                    :args $ [] 'Dynamic
-                    :return 'Unit
-                    :features $ #{} :js-ffi
+                  hint-fn $ Fn Dynamic (-> Unit) (:features :js-ffi)
                   js/console.log |Scaned info
                   .set! *show-scan false
                   on-scan $ read-barcode-data info
@@ -227,52 +197,37 @@
                   js{} $ :style $ js{} (:color |#fff)
                   , |Close
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'JsObject)
-            :args $ [] (:: 'app.core/%Atom 'Bool)
-              :: 'Fn $ {} (:return 'Unit)
-                :args $ [] 'String
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn (app.core/%Atom Bool)
+            Fn String $ -> Unit
+            -> JsObject
+            :features :js-ffi
         'read-barcode-data $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn read-barcode-data (info)
-            hint-fn $ {}
-              :args $ [] 'Dynamic
-              :return 'String
-              :features $ #{} :js-ffi
+            hint-fn $ Fn Dynamic (-> String) (:features :js-ffi)
             let
                 event $ js-cast info 'app.comp.container/BarcodeEvent
               .-data event
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'String)
-            :args $ [] 'Dynamic
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn Dynamic (-> String) (:features :js-ffi)
         'style-close-position $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def style-close-position
             js{} (:position |absolute) (:top 40) (:right 20)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ quote Dynamic
         'style-merge $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn style-merge (& args)
-            hint-fn $ {}
-              :args $ []
-              :rest 'JsObject
-              :return 'JsObject
-              :features $ #{} :js-ffi
+            hint-fn $ Fn & JsObject (-> JsObject) (:features :js-ffi)
             let
-                assign $ unsafe-coerce js/Object.assign $ :: 'Fn
-                  {}
-                    :args $ [] 'JsObject
-                    :rest 'JsObject
-                    :return 'JsObject
+                assign $ unsafe-coerce js/Object.assign $ quote
+                  Fn JsObject & JsObject $ -> JsObject
               assign (js{}) & args
           :examples $ []
-          :schema $ :: 'Fn $ {} (:rest 'JsObject) (:return 'JsObject)
-            :args $ []
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn & JsObject (-> JsObject) (:features :js-ffi)
         'style-press-button $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def style-press-button
             js{} (:backgroundColor |#555) (:color |#fff) (:justifyContent |center) (:alignItems |center) (:width 80) (:height 40)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ quote Dynamic
         'use-draft-plugin $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn use-draft-plugin (on-submit)
             let
@@ -309,11 +264,10 @@
                               .set! *show? false
               %:: %draft-plugin-actions :draft-plugin node *draft *show?
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'app.comp.container/%draft-plugin-actions)
-            :args $ [] $ :: 'Fn
-              {} (:return 'Unit)
-                :args $ [] 'String
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn
+            Fn String $ -> Unit
+            -> app.comp.container/%draft-plugin-actions
+            :features :js-ffi
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.comp.container
           :require (|react :as React)
@@ -328,64 +282,46 @@
         '%Atom $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def %Atom (impl-traits AtomState HookAtomImpl)
           :examples $ []
-          :schema $ :: 'EnumDef
+          :schema $ quote EnumDef
         '<> $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn <> (component props & children)
-            hint-fn $ {}
-              :args $ [] 'Dynamic 'Dynamic
-              :rest 'Dynamic
-              :return 'JsObject
-              :features $ #{} :js-ffi
+            hint-fn $ Fn Dynamic Dynamic & Dynamic (-> JsObject) (:features :js-ffi)
             let
                 host $ js-cast hooks 'app.core/ReactHooksHost
               .element host component props $ js-array & children
           :examples $ []
-          :schema $ :: 'Fn $ {} (:rest 'Dynamic) (:return 'JsObject)
-            :args $ [] 'Dynamic 'Dynamic
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn Dynamic Dynamic & Dynamic (-> JsObject) (:features :js-ffi)
         '<><> $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn <><> (& args)
             let
                 host $ js-cast hooks 'app.core/ReactHooksHost
               .fragment host $ js-array & args
           :examples $ []
-          :schema $ :: 'Fn $ {} (:rest 'Dynamic) (:return 'JsObject)
-            :args $ []
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn & Dynamic (-> JsObject) (:features :js-ffi)
         'AtomState $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defenum AtomState ([] 'T)
-            :atom (:: 'Ref 'T)
-              :: 'Fn $ {}
-                :args $ [] 'T
-                :return 'Unit
+            :atom
+              quote $ Ref T
+              quote $ Fn T $ -> Unit
           :examples $ []
-          :schema $ :: 'EnumDef
+          :schema $ quote EnumDef
         'HookAtomImpl $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defimpl HookAtomImpl HookAtomOps
             .deref $ fn (self)
-              hint-fn $ {}
-                :generics $ [] 'T
-                :args $ [] $ :: 'app.core/AtomState 'T
-                :return 'T
+              hint-fn $ Fn (app.core/AtomState T) (-> T) (:generics T)
               match self $
                 :atom cell setter
                 , @cell
             .set! $ fn (self value)
-              hint-fn $ {}
-                :generics $ [] 'T
-                :args $ [] (:: 'app.core/AtomState 'T) 'T
-                :return 'Unit
+              hint-fn $ Fn (app.core/AtomState T) T (-> Unit) (:generics T)
               match self $
                 :atom cell setter
                 do (reset! cell value) (setter value)
             .swap! $ fn (self transform)
-              hint-fn $ {}
-                :generics $ [] 'T
-                :args $ [] (:: 'app.core/AtomState 'T)
-                  :: 'Fn $ {}
-                    :args $ [] 'T
-                    :return 'T
-                :return 'Unit
+              hint-fn $ Fn (app.core/AtomState T)
+                Fn T $ -> T
+                -> Unit
+                :generics T
               match self $
                 :atom cell setter
                 let
@@ -393,69 +329,43 @@
                   reset! cell value
                   setter value
           :examples $ []
-          :schema $ :: 'Impl
+          :schema $ quote Impl
         'HookAtomOps $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait HookAtomOps
-            .deref $ :: 'Fn $ {}
-              :generics $ [] 'T
-              :args $ [] $ :: 'app.core/AtomState 'T
-              :return 'T
-            .set! $ :: 'Fn $ {}
-              :generics $ [] 'T
-              :args $ [] (:: 'app.core/AtomState 'T) 'T
-              :return 'Unit
-            .swap! $ :: 'Fn $ {}
-              :generics $ [] 'T
-              :args $ [] (:: 'app.core/AtomState 'T)
-                :: 'Fn $ {}
-                  :args $ [] 'T
-                  :return 'T
-              :return 'Unit
+            .deref $ quote $ Fn (app.core/AtomState T) (-> T) (:generics T)
+            .set! $ quote $ Fn (app.core/AtomState T) T (-> Unit) (:generics T)
+            .swap! $ quote $ Fn (app.core/AtomState T)
+              Fn T $ -> T
+              -> Unit
+              :generics T
           :examples $ []
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'ReactHooksHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait ReactHooksHost
-            .use-cell $ :: 'Fn $ {}
-              :generics $ [] 'T
-              :args $ [] 'app.core/ReactHooksHost 'T
-              :return 'T
-            .use-setter $ :: 'Fn $ {}
-              :generics $ [] 'T
-              :args $ [] 'app.core/ReactHooksHost 'T
-              :return $ :: 'Fn $ {}
-                :args $ [] 'T
-                :return 'Unit
-            .element $ :: 'Fn $ {}
-              :generics $ [] 'C 'P
-              :args $ [] 'app.core/ReactHooksHost 'C 'P 'JsObject
-              :return 'JsObject
+            .use-cell $ quote $ Fn app.core/ReactHooksHost T (-> T) (:generics T)
+            .use-setter $ quote $ Fn app.core/ReactHooksHost T
+              -> $ Fn T $ -> Unit
+              :generics T
+            .element $ quote $ Fn app.core/ReactHooksHost C P JsObject (-> JsObject) (:generics C P)
             .fragment $ :: 'Fn $ {}
               :generics $ []
               :args $ [] 'app.core/ReactHooksHost 'JsObject
               :return 'JsObject
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object)
-          :schema $ :: 'Trait
+          :schema $ quote Trait
         'js[] $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn js[] (& items)
-            hint-fn $ {}
-              :args $ []
-              :rest 'Dynamic
-              :return 'JsObject
-              :features $ #{} :js-ffi
+            hint-fn $ Fn & Dynamic (-> JsObject) (:features :js-ffi)
             js-array & items
           :examples $ []
-          :schema $ :: 'Fn $ {} (:rest 'Dynamic) (:return 'JsObject)
-            :args $ []
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn & Dynamic (-> JsObject) (:features :js-ffi)
         'js{} $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defmacro js{} (& args)
             quasiquote $ js-object $ ~@ args
           :examples $ []
-          :schema $ :: 'Macro $ {} (:rest 'Syntax)
-            :capabilities $ #{}
-            :expansion $ :: 'Expr 'JsObject
-            :required $ []
+          :schema $ quote $ Macro & Syntax
+            -> $ Expr JsObject
         'use-atom $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn use-atom (value)
             let
@@ -464,11 +374,10 @@
                 setter $ .use-setter host value
               %:: %Atom :atom cell setter
           :examples $ []
-          :schema $ :: 'Fn $ {}
-            :args $ [] 'T
-            :features $ #{} :js-ffi
-            :generics $ [] 'T
-            :return $ :: 'app.core/%Atom 'T
+          :schema $ quote $ Fn T
+            -> $ app.core/%Atom T
+            :generics T
+            :features :js-ffi
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.core
           :require $ |../hooks.mjs :default hooks
@@ -477,14 +386,11 @@
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! () (registerRootComponent comp-container) &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ []
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
         'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reload! () &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ []
+          :schema $ quote $ Fn (-> Unit)
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.main
           :require (|expo/build/launch/registerRootComponent :default registerRootComponent)
