@@ -15,7 +15,7 @@
     "web": "yarn compile && expo start --web"
   },
   "dependencies": {
-    "@calcit/procs": "0.32.0",
+    "@calcit/procs": "0.32.1",
     "expo": "~49.0.13",
     "expo-barcode-scanner": "~12.5.3",
     "expo-image-picker": "~14.3.2",
