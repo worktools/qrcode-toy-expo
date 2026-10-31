@@ -213,7 +213,7 @@
           :code $ quote $ def style-close-position
             js{} (:position |absolute) (:top 40) (:right 20)
           :examples $ []
-          :schema $ quote Dynamic
+          :schema $ quote JsObject
         'style-merge $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn style-merge (& args)
             hint-fn $ Fn & JsObject (-> JsObject) (:features :js-ffi)
@@ -227,7 +227,7 @@
           :code $ quote $ def style-press-button
             js{} (:backgroundColor |#555) (:color |#fff) (:justifyContent |center) (:alignItems |center) (:width 80) (:height 40)
           :examples $ []
-          :schema $ quote Dynamic
+          :schema $ quote JsObject
         'use-draft-plugin $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn use-draft-plugin (on-submit)
             let
