@@ -51,15 +51,15 @@
           :schema $ quote Impl
         'DraftPluginOps $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait DraftPluginOps
-            .render $ quote $ Fn app.comp.container/DraftPluginState (-> JsObject)
-            .show $ quote $ Fn app.comp.container/DraftPluginState (-> Unit)
-            .hide $ quote $ Fn app.comp.container/DraftPluginState (-> Unit)
-            .get $ quote $ Fn app.comp.container/DraftPluginState (-> String)
+            .render $ Fn app.comp.container/DraftPluginState $ -> JsObject
+            .show $ Fn app.comp.container/DraftPluginState $ -> Unit
+            .hide $ Fn app.comp.container/DraftPluginState $ -> Unit
+            .get $ Fn app.comp.container/DraftPluginState $ -> String
           :examples $ []
           :schema $ quote Trait
         'DraftPluginState $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defenum DraftPluginState
-            :draft-plugin 'JsObject
+            :draft-plugin JsObject
               quote $ app.core/%Atom String
               quote $ app.core/%Atom Bool
           :examples $ []
@@ -71,7 +71,7 @@
           :schema $ quote Trait
         'ImagePickerResult $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait ImagePickerResult (:canceled 'Bool)
-            :assets $ quote $ JsNullish JsArray
+            :assets $ JsNullish JsArray
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object)
           :schema $ quote Trait
@@ -87,7 +87,7 @@
           :schema $ quote Trait
         'ToastHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait ToastHost (:SHORT 'Number)
-            .show $ quote $ Fn app.comp.container/ToastHost String Number (-> Unit)
+            .show $ Fn app.comp.container/ToastHost String Number $ -> Unit
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object)
           :schema $ quote Trait
@@ -96,8 +96,7 @@
             let
                 *permission $ use-atom false
                 *show-scan $ use-atom false
-                *result $ use-atom $ assert-type (Option :none)
-                  quote $ Option String
+                *result $ use-atom $ assert-type (Option :none) (Option String)
                 draft-plugin $ use-draft-plugin $ fn (content)
                   hint-fn $ Fn String $ -> Unit
                   .set! *result $ Option :some content
@@ -173,7 +172,9 @@
                         <> View
                           js{} $ :style $ js{} (:marginTop 16)
                           <> QRCode $ js{} (:value content) (:size 320)
+                        , js/null
                     .render draft-plugin
+                  , js/null
           :examples $ []
           :schema $ quote $ Fn JsObject Dynamic (-> JsObject) (:features :js-ffi)
         'comp-scan $ %{} 'CodeEntry (:doc |)
@@ -218,8 +219,7 @@
           :code $ quote $ defn style-merge (& args)
             hint-fn $ Fn & JsObject (-> JsObject) (:features :js-ffi)
             let
-                assign $ unsafe-coerce js/Object.assign $ quote
-                  Fn JsObject & JsObject $ -> JsObject
+                assign $ unsafe-coerce js/Object.assign $ Fn JsObject & JsObject (-> JsObject)
               assign (js{}) & args
           :examples $ []
           :schema $ quote $ Fn & JsObject (-> JsObject) (:features :js-ffi)
@@ -299,10 +299,9 @@
           :examples $ []
           :schema $ quote $ Fn & Dynamic (-> JsObject) (:features :js-ffi)
         'AtomState $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defenum AtomState ([] 'T)
-            :atom
-              quote $ Ref T
-              quote $ Fn T $ -> Unit
+          :code $ quote $ defenum AtomState ([] T)
+            :atom (Ref T)
+              Fn T $ -> Unit
           :examples $ []
           :schema $ quote EnumDef
         'HookAtomImpl $ %{} 'CodeEntry (:doc |)
@@ -332,9 +331,9 @@
           :schema $ quote Impl
         'HookAtomOps $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait HookAtomOps
-            .deref $ quote $ Fn (app.core/AtomState T) (-> T) (:generics T)
-            .set! $ quote $ Fn (app.core/AtomState T) T (-> Unit) (:generics T)
-            .swap! $ quote $ Fn (app.core/AtomState T)
+            .deref $ Fn (app.core/AtomState T) (-> T) (:generics T)
+            .set! $ Fn (app.core/AtomState T) T (-> Unit) (:generics T)
+            .swap! $ Fn (app.core/AtomState T)
               Fn T $ -> T
               -> Unit
               :generics T
@@ -342,11 +341,11 @@
           :schema $ quote Trait
         'ReactHooksHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait ReactHooksHost
-            .use-cell $ quote $ Fn app.core/ReactHooksHost T (-> T) (:generics T)
-            .use-setter $ quote $ Fn app.core/ReactHooksHost T
+            .use-cell $ Fn app.core/ReactHooksHost T (-> T) (:generics T)
+            .use-setter $ Fn app.core/ReactHooksHost T
               -> $ Fn T $ -> Unit
               :generics T
-            .element $ quote $ Fn app.core/ReactHooksHost C P JsObject (-> JsObject) (:generics C P)
+            .element $ Fn app.core/ReactHooksHost C P JsObject (-> JsObject) (:generics C P)
             .fragment $ :: 'Fn $ {}
               :generics $ []
               :args $ [] 'app.core/ReactHooksHost 'JsObject
