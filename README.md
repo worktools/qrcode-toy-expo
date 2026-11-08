@@ -2,8 +2,8 @@
 
 基于 Expo SDK49 / React Native 0.72 的原生二维码工具，支持相机扫码、图片扫码与文本二维码生成。
 
-使用已完成配对发布的正式 Calcit / `@calcit/procs@0.35.1`、Node.js 24 和 Yarn 4.18.0。
-采用 0.35.1 的数据声明语法。隐藏扫码背后的主界面和空二维码时，显式向 React 传递 null；扫码结果继续用 Option 区分尚无结果和空字符串。
+使用已完成配对发布的正式 Calcit 0.37.0 / `@calcit/procs@0.37.0`、Node.js 24 和 Yarn 4.18.0。
+采用当前 Calcit 数据声明语法。隐藏扫码背后的主界面和空二维码时，显式向 React 传递 null；扫码结果继续用 Option 区分尚无结果和空字符串。
 升级时同步安装 runtime 并重新生成 JS；不混用旧 alpha 产物。保留 Expo49 / React Native0.72，
 此次不迁移 Expo SDK、设备权限或商店发布流程；相机/相册仍需要原权限与真机验收。
 原 lock 中四个原生模块超出 SDK49 的兼容声明，现按 Expo 自带版本检查对齐：
