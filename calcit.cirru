@@ -222,7 +222,7 @@
                 assign $ unsafe-coerce js/Object.assign $ Fn JsObject & JsObject (-> JsObject)
               assign (js{}) & args
           :examples $ []
-          :schema $ quote $ Fn & JsObject (-> JsObject) (:features :js-ffi)
+          :schema $ quote $ Fn (& JsObject) (-> JsObject) (:features :js-ffi)
         'style-press-button $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def style-press-button
             js{} (:backgroundColor |#555) (:color |#fff) (:justifyContent |center) (:alignItems |center) (:width 80) (:height 40)
@@ -285,19 +285,19 @@
           :schema $ quote EnumDef
         '<> $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn <> (component props & children)
-            hint-fn $ Fn Dynamic Dynamic & Dynamic (-> JsObject) (:features :js-ffi)
+            hint-fn $ Fn C P & Dynamic (-> JsObject) (:generics C P) (:features :js-ffi)
             let
                 host $ js-cast hooks 'app.core/ReactHooksHost
               .element host component props $ js-array & children
           :examples $ []
-          :schema $ quote $ Fn Dynamic Dynamic & Dynamic (-> JsObject) (:features :js-ffi)
+          :schema $ quote $ Fn C P (& Dynamic) (-> JsObject) (:generics C P) (:features :js-ffi)
         '<><> $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn <><> (& args)
             let
                 host $ js-cast hooks 'app.core/ReactHooksHost
               .fragment host $ js-array & args
           :examples $ []
-          :schema $ quote $ Fn & Dynamic (-> JsObject) (:features :js-ffi)
+          :schema $ quote $ Fn (& Dynamic) (-> JsObject) (:features :js-ffi)
         'AtomState $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defenum AtomState ([] T)
             :atom (Ref T)
@@ -358,12 +358,12 @@
             hint-fn $ Fn & Dynamic (-> JsObject) (:features :js-ffi)
             js-array & items
           :examples $ []
-          :schema $ quote $ Fn & Dynamic (-> JsObject) (:features :js-ffi)
+          :schema $ quote $ Fn (& Dynamic) (-> JsObject) (:features :js-ffi)
         'js{} $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defmacro js{} (& args)
             quasiquote $ js-object $ ~@ args
           :examples $ []
-          :schema $ quote $ Macro & Syntax
+          :schema $ quote $ Macro (& Syntax)
             -> $ Expr JsObject
         'use-atom $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn use-atom (value)
