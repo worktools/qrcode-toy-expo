@@ -137,7 +137,7 @@
                           str-spaced "|No permission" $ .deref *permission
                       <> Button $ js{} (:title |File)
                         :onPress $ fn (e)
-                          hint-fn $ Fn Dynamic (-> Unit) (:features :js-ffi) (:async)
+                          hint-fn $ Fn (JsNullish JsObject) (-> Unit) (:features :js-ffi) (:async)
                           let
                               result $ js-cast
                                 js-await $ launchImageLibraryAsync $ js{} (:allowsEditing true) (:quality 1)
@@ -185,7 +185,7 @@
                 :onRequestClose $ fn () $ .set! *show-scan false
               <> BarCodeScanner $ js{}
                 :onBarCodeScanned $ fn (info)
-                  hint-fn $ Fn Dynamic (-> Unit) (:features :js-ffi)
+                  hint-fn $ Fn app.comp.container/BarcodeEvent (-> Unit) (:features :js-ffi)
                   js/console.log |Scaned info
                   .set! *show-scan false
                   on-scan $ read-barcode-data info
@@ -203,13 +203,10 @@
             -> JsObject
             :features :js-ffi
         'read-barcode-data $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn read-barcode-data (info)
-            hint-fn $ Fn Dynamic (-> String) (:features :js-ffi)
-            let
-                event $ js-cast info 'app.comp.container/BarcodeEvent
-              .-data event
+          :code $ quote $ defn read-barcode-data (event)
+            .-data $ js-cast event 'app.comp.container/BarcodeEvent
           :examples $ []
-          :schema $ quote $ Fn Dynamic (-> String) (:features :js-ffi)
+          :schema $ quote $ Fn app.comp.container/BarcodeEvent (-> String) (:features :js-ffi)
         'style-close-position $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def style-close-position
             js{} (:position |absolute) (:top 40) (:right 20)
