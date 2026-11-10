@@ -192,7 +192,7 @@
                 :style $ js{} (:width |100%) (:height |100%) (:backgroundColor "|hsla(0,0%,0%,0.7)")
               <> Pressable
                 js{}
-                  :style $ style-merge style-press-button style-close-position
+                  :style $ js{} (:backgroundColor |#555) (:color |#fff) (:justifyContent |center) (:alignItems |center) (:width 80) (:height 40) (:position |absolute) (:top 40) (:right 20)
                   :onPress $ fn (e) (.set! *show-scan false)
                 <> Text
                   js{} $ :style $ js{} (:color |#fff)
@@ -207,24 +207,6 @@
             .-data $ js-cast event 'app.comp.container/BarcodeEvent
           :examples $ []
           :schema $ quote $ Fn app.comp.container/BarcodeEvent (-> String) (:features :js-ffi)
-        'style-close-position $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ def style-close-position
-            js{} (:position |absolute) (:top 40) (:right 20)
-          :examples $ []
-          :schema $ quote JsObject
-        'style-merge $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn style-merge (& args)
-            hint-fn $ Fn & JsObject (-> JsObject) (:features :js-ffi)
-            let
-                assign $ unsafe-coerce js/Object.assign $ Fn JsObject & JsObject (-> JsObject)
-              assign (js{}) & args
-          :examples $ []
-          :schema $ quote $ Fn (& JsObject) (-> JsObject) (:features :js-ffi)
-        'style-press-button $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ def style-press-button
-            js{} (:backgroundColor |#555) (:color |#fff) (:justifyContent |center) (:alignItems |center) (:width 80) (:height 40)
-          :examples $ []
-          :schema $ quote JsObject
         'use-draft-plugin $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn use-draft-plugin (on-submit)
             let

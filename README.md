@@ -2,7 +2,7 @@
 
 基于 Expo SDK49 / React Native 0.72 的原生二维码工具，支持相机扫码、图片扫码与文本二维码生成。
 
-使用已完成配对发布的正式 Calcit 0.38.0 / `@calcit/procs@0.38.0`、Node.js 24 和 Yarn 4.18.0。
+使用已完成配对发布的正式 Calcit 0.40.0 / `@calcit/procs@0.40.0`、Node.js 24 和 Yarn 4.18.0。
 采用当前 Calcit 数据声明语法。隐藏扫码背后的主界面和空二维码时，显式向 React 传递 null；扫码结果继续用 Option 区分尚无结果和空字符串。
 升级时同步安装 runtime 并重新生成 JS；不混用旧 alpha 产物。保留 Expo49 / React Native0.72，
 此次不迁移 Expo SDK、设备权限或商店发布流程；相机/相册仍需要原权限与真机验收。
@@ -33,8 +33,7 @@ yarn android
 状态 Hook 使用泛型 `Ref<T>` 和 setter，布尔扫描状态、字符串草稿、`Option<String>`
 扫描结果不再共用抹除类型的 Dynamic trait。`hooks.mjs` 只桥接 React 的稳定 Hook
 与 element/fragment API；可变 children 在这个边界转为 JS 数组，相关上游限制见
-[calcit #2209](https://github.com/calcit-lang/calcit/issues/2209)。唯一保留的 unsafe
-是原 `Object.assign` 样式合并适配器，不扩散到应用状态。
+[calcit #2209](https://github.com/calcit-lang/calcit/issues/2209)。关闭按钮直接使用同一组静态样式，移除了原 `Object.assign` 的类型强转。
 
 `yarn check` 包含全部定义和完整 strict；原三个命名空间均已由 all-defs 覆盖，不重复检查。`yarn test`
 会先编译所需的 `js-out/`，可在干净安装后独立运行，再使用匹配 React 18.2 的 renderer，
