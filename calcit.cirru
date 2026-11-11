@@ -96,10 +96,10 @@
             let
                 *permission $ use-atom false
                 *show-scan $ use-atom false
-                *result $ use-atom $ assert-type (Option :none) (Option String)
+                *result $ use-atom $ assert-type None (Option String)
                 draft-plugin $ use-draft-plugin $ fn (content)
                   hint-fn $ Fn String $ -> Unit
-                  .set! *result $ Option :some content
+                  .set! *result $ Some content
               React/useEffect
                 fn () $ let
                     get-permissions $ fn ()
@@ -111,13 +111,13 @@
                         .set! *permission $ = (.-status status) |granted
                   get-permissions
                   , js/undefined
-                js[]
+                js-array
               <><>
                 <> StatusBar $ js{} $ :style |light
                 comp-scan *show-scan $ fn (content)
                   let
                       c $ .trim content
-                    .set! *result $ Option :some c
+                    .set! *result $ Some c
                 if
                   not $ .deref *show-scan
                   <> View
@@ -161,7 +161,7 @@
                                         , 'app.comp.container/BarcodeResults
                                     if
                                       > (.-length results) 0
-                                      .set! *result $ Option :some $ read-barcode-data (.-first results)
+                                      .set! *result $ Some $ read-barcode-data (.-first results)
                             , &unit
                       <> Button $ js{} (:title |Text)
                         :onPress $ fn (e) (.show draft-plugin)
@@ -206,7 +206,7 @@
           :code $ quote $ defn read-barcode-data (event)
             .-data $ js-cast event 'app.comp.container/BarcodeEvent
           :examples $ []
-          :schema $ quote $ Fn app.comp.container/BarcodeEvent (-> String) (:features :js-ffi)
+          :schema $ quote $ Fn BarcodeEvent (-> String) (:features :js-ffi)
         'use-draft-plugin $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn use-draft-plugin (on-submit)
             let
@@ -276,7 +276,10 @@
                 host $ js-cast hooks 'app.core/ReactHooksHost
               .fragment host $ js-array & args
           :examples $ []
-          :schema $ quote $ Fn (& Dynamic) (-> JsObject) (:features :js-ffi)
+          :schema $ quote $ Fn
+            & $ JsNullish JsObject
+            -> JsObject
+            :features :js-ffi
         'AtomState $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defenum AtomState ([] T)
             :atom (Ref T)
@@ -332,12 +335,6 @@
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object)
           :schema $ quote Trait
-        'js[] $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn js[] (& items)
-            hint-fn $ Fn & Dynamic (-> JsObject) (:features :js-ffi)
-            js-array & items
-          :examples $ []
-          :schema $ quote $ Fn (& Dynamic) (-> JsObject) (:features :js-ffi)
         'js{} $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defmacro js{} (& args)
             quasiquote $ js-object $ ~@ args
