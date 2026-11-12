@@ -28,22 +28,22 @@
         'DraftPluginImpl $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defimpl DraftPluginImpl DraftPluginOps
             .render $ fn (self)
-              hint-fn $ Fn app.comp.container/DraftPluginState $ -> JsObject
+              hint-fn $ Fn DraftPluginState $ -> JsObject
               match self $
                 :draft-plugin node draft visibility
                 , node
             .show $ fn (self)
-              hint-fn $ Fn app.comp.container/DraftPluginState $ -> Unit
+              hint-fn $ Fn DraftPluginState $ -> Unit
               match self $
                 :draft-plugin node draft visibility
                 .set! visibility true
             .hide $ fn (self)
-              hint-fn $ Fn app.comp.container/DraftPluginState $ -> Unit
+              hint-fn $ Fn DraftPluginState $ -> Unit
               match self $
                 :draft-plugin node draft visibility
                 .set! visibility false
             .get $ fn (self)
-              hint-fn $ Fn app.comp.container/DraftPluginState $ -> String
+              hint-fn $ Fn DraftPluginState $ -> String
               match self $
                 :draft-plugin node draft visibility
                 .deref draft
@@ -176,7 +176,7 @@
                     .render draft-plugin
                   , js/null
           :examples $ []
-          :schema $ quote $ Fn JsObject Dynamic (-> JsObject) (:features :js-ffi)
+          :schema $ quote $ Fn JsObject (JsNullish JsObject) (-> JsObject) (:features :js-ffi)
         'comp-scan $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn comp-scan (*show-scan on-scan)
             <> Modal
@@ -185,7 +185,7 @@
                 :onRequestClose $ fn () $ .set! *show-scan false
               <> BarCodeScanner $ js{}
                 :onBarCodeScanned $ fn (info)
-                  hint-fn $ Fn app.comp.container/BarcodeEvent (-> Unit) (:features :js-ffi)
+                  hint-fn $ Fn BarcodeEvent (-> Unit) (:features :js-ffi)
                   js/console.log |Scaned info
                   .set! *show-scan false
                   on-scan $ read-barcode-data info
@@ -281,7 +281,7 @@
             -> JsObject
             :features :js-ffi
         'AtomState $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defenum AtomState ([] T)
+          :code $ quote $ defenum AtomState (:generics T)
             :atom (Ref T)
               Fn T $ -> Unit
           :examples $ []
@@ -289,17 +289,17 @@
         'HookAtomImpl $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defimpl HookAtomImpl HookAtomOps
             .deref $ fn (self)
-              hint-fn $ Fn (app.core/AtomState T) (-> T) (:generics T)
+              hint-fn $ Fn (AtomState T) (-> T) (:generics T)
               match self $
                 :atom cell setter
                 , @cell
             .set! $ fn (self value)
-              hint-fn $ Fn (app.core/AtomState T) T (-> Unit) (:generics T)
+              hint-fn $ Fn (AtomState T) T (-> Unit) (:generics T)
               match self $
                 :atom cell setter
                 do (reset! cell value) (setter value)
             .swap! $ fn (self transform)
-              hint-fn $ Fn (app.core/AtomState T)
+              hint-fn $ Fn (AtomState T)
                 Fn T $ -> T
                 -> Unit
                 :generics T
