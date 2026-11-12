@@ -3,7 +3,7 @@ import test from 'node:test';
 import React from 'react';
 import { act, create } from 'react-test-renderer';
 import * as runtime from '../js-out/calcit.core.mjs';
-import { use_atom, _LT__GT_ as element, _LT__GT__LT__GT_ as fragment } from '../js-out/app.core.mjs';
+import { use_atom, text_element, _LT__GT_ as element, _LT__GT__LT__GT_ as fragment } from '../js-out/app.core.mjs';
 
 const read = (atom) => runtime.invoke_method('deref', atom);
 const write = (atom, value) => runtime.invoke_method('set!', atom, value);
@@ -13,7 +13,7 @@ test('scan visibility reads the latest cell during batched toggles and re-render
   let atom;
   function Screen() {
     atom = use_atom(false);
-    return fragment(element('visibility', {}, String(read(atom))));
+    return fragment(element('visibility', {}, text_element('label', {}, String(read(atom)))));
   }
   let view;
   act(() => { view = create(React.createElement(Screen)); });
@@ -25,11 +25,11 @@ test('scan visibility reads the latest cell during batched toggles and re-render
     assert.equal(read(original), false);
     swap(original, (value) => !value);
   });
-  assert.equal(view.toJSON().children[0], 'true');
+  assert.equal(view.toJSON().children[0].children[0], 'true');
   assert.equal(read(original), true);
   act(() => { write(atom, false); });
   assert.equal(read(original), false);
-  assert.equal(view.toJSON().children[0], 'false');
+  assert.equal(view.toJSON().children[0].children[0], 'false');
   act(() => { view.unmount(); });
 });
 
@@ -37,7 +37,7 @@ test('text input keeps Unicode edits across parent re-renders', () => {
   let draft;
   function Screen({ label }) {
     draft = use_atom('');
-    return element('draft', { label }, read(draft));
+    return text_element('draft', { label }, read(draft));
   }
   let view;
   act(() => { view = create(React.createElement(Screen, { label: 'before' })); });

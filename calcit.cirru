@@ -123,7 +123,7 @@
                   <> View
                     js{} $ :style $ js{} (:paddingTop 40) (:paddingLeft 20) (:backgroundColor |#eee) (:height |100%)
                     <> View (js{})
-                      <> Text
+                      text-element Text
                         js{} $ :style $ js{} (:fontFamily |monospace) (:marginBottom 12)
                         str "|Scan result: " $ match (.deref *result)
                           (:some text) (js/JSON.stringify text)
@@ -133,7 +133,7 @@
                       if (.deref *permission)
                         <> Button $ js{} (:title |Scan)
                           :onPress $ fn (e) (.swap! *show-scan not)
-                        <> Text (js{})
+                        text-element Text (js{})
                           str-spaced "|No permission" $ .deref *permission
                       <> Button $ js{} (:title |File)
                         :onPress $ fn (e)
@@ -194,7 +194,7 @@
                 js{}
                   :style $ js{} (:backgroundColor |#555) (:color |#fff) (:justifyContent |center) (:alignItems |center) (:width 80) (:height 40) (:position |absolute) (:top 40) (:right 20)
                   :onPress $ fn (e) (.set! *show-scan false)
-                <> Text
+                text-element Text
                   js{} $ :style $ js{} (:color |#fff)
                   , |Close
           :examples $ []
@@ -252,7 +252,7 @@
           :require (|react :as React)
             |react-native :refer $ View Modal Button ToastAndroid Text StyleSheet ScrollView SafeAreaView Pressable TextInput Platform
             |expo-barcode-scanner :refer $ BarCodeScanner
-            app.core :refer $ <> <><> use-atom js{} js[]
+            app.core :refer $ <> <><> text-element use-atom js{} js[]
             |react-native-qrcode-svg :default QRCode
             |expo-status-bar :refer $ StatusBar
             |expo-image-picker :refer $ launchImageLibraryAsync
@@ -264,12 +264,20 @@
           :schema $ quote EnumDef
         '<> $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn <> (component props & children)
-            hint-fn $ Fn C P & Dynamic (-> JsObject) (:generics C P) (:features :js-ffi)
+            hint-fn $ Fn C P
+              & $ JsNullish JsObject
+              -> JsObject
+              :generics C P
+              :features :js-ffi
             let
                 host $ js-cast hooks 'app.core/ReactHooksHost
               .element host component props $ js-array & children
           :examples $ []
-          :schema $ quote $ Fn C P (& Dynamic) (-> JsObject) (:generics C P) (:features :js-ffi)
+          :schema $ quote $ Fn C P
+            & $ JsNullish JsObject
+            -> JsObject
+            :generics C P
+            :features :js-ffi
         '<><> $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn <><> (& args)
             let
@@ -341,6 +349,13 @@
           :examples $ []
           :schema $ quote $ Macro (& Syntax)
             -> $ Expr JsObject
+        'text-element $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn text-element (component props text)
+            let
+                host $ js-cast hooks 'app.core/ReactHooksHost
+              .element host component props $ js-array text
+          :examples $ []
+          :schema $ quote $ Fn C P String (-> JsObject) (:generics C P) (:features :js-ffi)
         'use-atom $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn use-atom (value)
             let
