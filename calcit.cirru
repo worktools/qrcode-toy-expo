@@ -10,10 +10,6 @@
   :files $ {}
     'app.comp.container $ %{} 'FileEntry
       :defs $ {}
-        '%draft-plugin-actions $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ def %draft-plugin-actions (impl-traits DraftPluginState DraftPluginImpl)
-          :examples $ []
-          :schema $ quote EnumDef
         'BarcodeEvent $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait BarcodeEvent (:data 'String)
           :examples $ []
@@ -26,7 +22,7 @@
             :names $ {} $ :first |0
           :schema $ quote Trait
         'DraftPluginImpl $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defimpl DraftPluginImpl DraftPluginOps
+          :code $ quote $ defimpl DraftPluginState DraftPluginOps
             .render $ fn (self)
               hint-fn $ Fn DraftPluginState $ -> JsObject
               match self $
@@ -58,10 +54,8 @@
           :examples $ []
           :schema $ quote Trait
         'DraftPluginState $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defenum DraftPluginState
-            :draft-plugin JsObject
-              quote $ app.core/%Atom String
-              quote $ app.core/%Atom Bool
+          :code $ quote $ defenum DraftPluginState (:impls DraftPluginOps)
+            :draft-plugin JsObject (app.core/AtomState String) (app.core/AtomState Bool)
           :examples $ []
           :schema $ quote EnumDef
         'ImageAsset $ %{} 'CodeEntry (:doc |)
@@ -198,7 +192,7 @@
                   js{} $ :style $ js{} (:color |#fff)
                   , |Close
           :examples $ []
-          :schema $ quote $ Fn (app.core/%Atom Bool)
+          :schema $ quote $ Fn (app.core/AtomState Bool)
             Fn String $ -> Unit
             -> JsObject
             :features :js-ffi
@@ -241,11 +235,11 @@
                             :onPress $ fn (e)
                               on-submit $ .deref *draft
                               .set! *show? false
-              %:: %draft-plugin-actions :draft-plugin node *draft *show?
+              DraftPluginState :draft-plugin node *draft *show?
           :examples $ []
           :schema $ quote $ Fn
             Fn String $ -> Unit
-            -> app.comp.container/%draft-plugin-actions
+            -> DraftPluginState
             :features :js-ffi
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.comp.container
@@ -258,10 +252,6 @@
             |expo-image-picker :refer $ launchImageLibraryAsync
     'app.core $ %{} 'FileEntry
       :defs $ {}
-        '%Atom $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ def %Atom (impl-traits AtomState HookAtomImpl)
-          :examples $ []
-          :schema $ quote EnumDef
         '<> $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn <> (component props & children)
             hint-fn $ Fn C P
@@ -289,13 +279,13 @@
             -> JsObject
             :features :js-ffi
         'AtomState $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defenum AtomState (:generics T)
+          :code $ quote $ defenum AtomState (:generics T) (:impls HookAtomOps)
             :atom (Ref T)
               Fn T $ -> Unit
           :examples $ []
           :schema $ quote EnumDef
         'HookAtomImpl $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defimpl HookAtomImpl HookAtomOps
+          :code $ quote $ defimpl AtomState HookAtomOps
             .deref $ fn (self)
               hint-fn $ Fn (AtomState T) (-> T) (:generics T)
               match self $
@@ -362,10 +352,10 @@
                 host $ js-cast hooks 'app.core/ReactHooksHost
                 cell $ .use-cell host $ ref value
                 setter $ .use-setter host value
-              %:: %Atom :atom cell setter
+              AtomState :atom cell setter
           :examples $ []
           :schema $ quote $ Fn T
-            -> $ app.core/%Atom T
+            -> $ AtomState T
             :generics T
             :features :js-ffi
       :ns $ %{} 'NsEntry (:doc |)
